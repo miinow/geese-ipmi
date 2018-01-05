@@ -25,13 +25,13 @@ module.exports = class {
 				log("error", `连接数据库失败，${err}`);
 				cb(err);
 			} else {
-				connect.query(sql, post, (err, rows) => {
+				connect.query(sql, post, (err, result) => {
 					this._release(connect);
 					if ( err ) {
 						log("error", `执行数据库命令失败， ${err}`);
 						cb(err);
 					} else {
-						cb(null, rows);
+						cb(null, result);
 					}
 
 				});

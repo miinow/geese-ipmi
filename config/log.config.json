@@ -2,7 +2,10 @@
 	"appenders" : {
 		"mio" : {
 			"type" : "dateFile",
-			"filename" : "../log/log.log"
+			"filename" : "../log/log.log",
+			"layout" : {
+				"type" : "basic"
+			}
 		}
 	},
 	"categories" : {

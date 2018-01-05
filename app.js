@@ -1,3 +1,5 @@
-const ipmi = require("./runCMD");
+const { ipmi } = require("./runCMD");
+const config = require("./config/index");
 
-ipmi();
+setInterval( ipmi, config.frequency);
+
