@@ -1,14 +1,21 @@
 {
-  "name": "geese-ipmi",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "mio",
-  "license": "ISC",
-  "dependencies": {
-    "mysql": "^2.15.0"
-  }
+    "name": "geese-ipmi",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "mio",
+    "license": "ISC",
+    "dependencies": {
+        "log4js": "^2.4.1",
+        "mysql": "^2.15.0"
+    },
+    "devDependencies": {
+        "eslint": "^4.14.0"
+    },
+    "eslintConfig": {
+        "extends": "airbnb"
+    }
 }

@@ -1,0 +1,16 @@
+{
+	"appenders" : {
+		"mio" : {
+			"type" : "dateFile",
+			"filename" : "../log/log.log"
+		}
+	},
+	"categories" : {
+		"default" : {
+			"appenders" : [
+				"mio"
+			],
+			"level" : "error"
+		}
+	}
+}
