@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const { exec } = require("child_process");
 
 const log = require("./base/log");
@@ -36,7 +35,7 @@ const convertData = (data) => {
 	return result;
 };
 
-export const ipmi = () => {
+const ipmi = () => {
 	let comm = `ipmiutil sensor ${type} ${serverConfig.ip} -U ${serverConfig.user} -P ${serverConfig.password}`;
 
 	runCMD(comm, (data) => {
@@ -47,3 +46,4 @@ export const ipmi = () => {
 
 
 
+module.exports = ipmi;

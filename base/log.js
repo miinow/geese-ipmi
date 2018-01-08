@@ -9,5 +9,5 @@ const log = (level, info) => {
 	logger[level](info);
 };
 
-export default log;
+module.exports =  log;
 
