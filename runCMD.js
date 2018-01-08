@@ -4,11 +4,13 @@ const log = require("./base/log");
 const mysql = require("./base/mysql.class");
 const orm = new mysql();
 
+const utils = require("./utils");
+
 const config = require("./config/index");
 const serverConfig = require("./config/server.config")["server-1"];
 
 const type = config.type === "all"? "-N" : "-i";
-
+const sensType = config.sensType;
 
 const runCMD = (cmd, cb) => {
 	const child = exec(cmd);
@@ -30,8 +32,30 @@ const insertData = (post) => {
 };
 
 const convertData = (data) => {
-	//todo: 数据格式转换
-	let result = data;
+	let result = {},
+		dataArr = data.split("\n");
+
+	dataArr.forEach((val) => {
+		sensType.forEach((sens) => {
+			if ( val.indexOf(sens) > 0 ) {
+				sens = sens.replace(/\s/g, "");
+				let item = val.split("=")[1];
+				let itemArr = utils.deleteNull(item.split(" "));
+
+				if ( sens !== "PowerOnHours" ) {
+					result[`${sens}_status`] = itemArr[1];
+
+					if ( itemArr[2] ) {
+						result[`${sens}_value`] = itemArr[2];
+					}
+				} else {
+					result[`${sens}_value`] = itemArr[0];
+				}
+
+			}
+		});
+	});
+
 	return result;
 };
 
@@ -43,7 +67,5 @@ const ipmi = () => {
 		insertData(post);
 	});
 };
-
-
 
 module.exports = ipmi;
