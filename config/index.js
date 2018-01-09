@@ -19,7 +19,7 @@ module.exports = {
 		"PSU FAULT",
 		"DIMM FAULT",
 		"CPU Usage",
-		"System 3V",
+		"System 3.3V",
 		"System 12V",
 		"System 5V",
 		"Power On Hours"
