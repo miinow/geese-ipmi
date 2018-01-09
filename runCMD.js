@@ -52,9 +52,14 @@ const convertData = (data) => {
 					result[`${sens}_value`] = itemArr[0];
 				}
 
+			} else if(val.indexOf("Connecting to")>0){
+				let itemArr = val.split(" ");
+				result.ip = itemArr[3];
 			}
 		});
 	});
+
+	result.time = utils.moment(Date.now());
 
 	return result;
 };

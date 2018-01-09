@@ -1,7 +1,13 @@
 {
-    "server-1" :{
-        "ip":"10.10.143.245",
-        "user":"geese",
-        "password":"geese755195"
-    }
+	"server-1" :{
+		"ip":"10.10.143.245",
+		"user":"lenovo",
+		"password":"len0vO"
+	},
+	
+	"server-2" :{
+		"ip":"10.10.143.246",
+		"user":"lenovo",
+		"password":"len0vO"
+	}
 }
