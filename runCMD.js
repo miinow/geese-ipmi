@@ -12,8 +12,6 @@ const servers = require("./config/server.config");
 const type = config.type === "all"? "-N" : "-i";
 const sensType = config.sensType;
 
-
-
 const runCMD = (cmd) => {
 	const child = exec(cmd);
 	let result = "";
@@ -45,7 +43,7 @@ const convertData = (data) => {
 			if ( val.indexOf(sens) > 0 ) {
 				sens = sens.replace(/\s/g, "");
 				let item = val.split("=")[1];
-				let itemArr = utils.deleteNull(item.replace(/\r/,"").split(" "));
+				let itemArr = utils.deleteNull(item.replace(/\r/, "").split(" "));
 
 				if ( sens !== "PowerOnHours" ) {
 					result[`${sens}_status`] = itemArr[1];
@@ -57,11 +55,15 @@ const convertData = (data) => {
 					result[`${sens}_value`] = itemArr[0];
 				}
 
-			} else if ( val.indexOf("Connecting to") > 0 ) {
-				let itemArr = val.split(" ");
-				result.ip = itemArr[3];
 			}
 		});
+
+		if ( val.indexOf("Connecting to") > -1 ) {
+
+			let itemArr = utils.deleteNull(val.split(" "));
+			result.ip = itemArr[3];
+		}
+
 	});
 
 	result.time = utils.moment(Date.now());
@@ -80,7 +82,7 @@ const ipmi = () => {
 
 			runCMD(comm)
 				.then(data => {
-					let post =  convertData(data);
+					let post = convertData(data);
 					insertData(post);
 				})
 				.catch(err => log("error", `执行cmd命令失败， ${err}`));
