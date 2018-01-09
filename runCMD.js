@@ -7,20 +7,25 @@ const orm = new mysql();
 const utils = require("./utils");
 
 const config = require("./config/index");
-const serverConfig = require("./config/server.config")["server-1"];
+const servers = require("./config/server.config");
 
 const type = config.type === "all"? "-N" : "-i";
 const sensType = config.sensType;
 
-const runCMD = (cmd, cb) => {
+
+
+const runCMD = (cmd) => {
 	const child = exec(cmd);
 	let result = "";
-	child.stdout.on("data", buffer => result += buffer.toString());
-	child.stdout.on("end", () => {
-		cb(result);
-	});
-	child.stderr.on("data", err => {
-		log("error", `执行cmd命令失败， ${err}`);
+
+	return new Promise((resolve, reject) => {
+		child.stdout.on("data", buffer => result += buffer.toString());
+		child.stdout.on("end", () => {
+			resolve(result);
+		});
+		child.stderr.on("data", err => {
+			reject(err);
+		});
 	});
 };
 
@@ -52,7 +57,7 @@ const convertData = (data) => {
 					result[`${sens}_value`] = itemArr[0];
 				}
 
-			} else if(val.indexOf("Connecting to")>0){
+			} else if ( val.indexOf("Connecting to") > 0 ) {
 				let itemArr = val.split(" ");
 				result.ip = itemArr[3];
 			}
@@ -65,12 +70,24 @@ const convertData = (data) => {
 };
 
 const ipmi = () => {
-	let comm = `ipmiutil sensor ${type} ${serverConfig.ip} -U ${serverConfig.user} -P ${serverConfig.password}`;
 
-	runCMD(comm, (data) => {
-		let post = convertData(data);
-		insertData(post);
-	});
+	for ( let server in servers ) {
+
+		if ( servers.hasOwnProperty(server) ) {
+
+			let serverConfig = servers[server];
+			let comm = `ipmiutil sensor ${type} ${serverConfig.ip} -U ${serverConfig.user} -P ${serverConfig.password}`;
+
+			runCMD(comm)
+				.then(data => {
+					let post =  convertData(data);
+					insertData(post);
+				})
+				.catch(err => log("error", `执行cmd命令失败， ${err}`));
+
+		}
+	}
+
 };
 
 module.exports = ipmi;
