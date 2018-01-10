@@ -61,7 +61,7 @@ const convertData = (data) => {
 		if ( val.indexOf("Connecting to") > -1 ) {
 
 			let itemArr = utils.deleteNull(val.split(" "));
-			result.ip = itemArr[3];
+			result.ip = itemArr[3].replace(/\r/, "");
 		}
 
 	});

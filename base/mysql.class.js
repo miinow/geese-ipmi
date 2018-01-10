@@ -55,11 +55,12 @@ module.exports = class {
 
 	run (post, sql) {
 
-		const db = sqlConfig[env].database;
+		//const db = sqlConfig[env].database;
 		const table = config.table;
 
-		if ( sql === null ) {
-			sql = `INSERT INTO ${db}.${table} SET ？`;
+		if ( sql == null ) {
+			//sql = `INSERT INTO ${db}.${table} SET ？`;
+			sql = "INSERT INTO " + table + " SET ?";
 		}
 		return new Promise((resolve, reject) => {
 			this._execQuery(post, sql, (err, data) => {
