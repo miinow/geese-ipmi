@@ -41,9 +41,13 @@ const convertData = (data) => {
 	dataArr.forEach((val) => {
 		sensType.forEach((sens) => {
 			if ( val.indexOf(sens) > 0 ) {
-				sens = sens.replace(/\s/g, "");
+				sens = sens.replace(/\s|\./g, "");
 				let item = val.split("=")[1];
 				let itemArr = utils.deleteNull(item.replace(/\r/, "").split(" "));
+
+				if ( sens.indexOf(".") > -1 ) {
+					sens = sens.replace(/\.\d?/, "");
+				}
 
 				if ( sens !== "PowerOnHours" ) {
 					result[`${sens}_status`] = itemArr[1];
