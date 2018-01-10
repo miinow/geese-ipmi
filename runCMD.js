@@ -12,11 +12,11 @@ const servers = require("./config/server.config");
 const type = config.type === "all"? "-N" : "-i";
 const sensType = config.sensType;
 
-const runCMD = (cmd) => {
+const runCMD = async (cmd) => {
 	const child = exec(cmd);
 	let result = "";
 
-	return new Promise((resolve, reject) => {
+	return await  new Promise((resolve, reject) => {
 		child.stdout.on("data", buffer => result += buffer.toString());
 		child.stdout.on("end", () => {
 			resolve(result);
@@ -26,6 +26,8 @@ const runCMD = (cmd) => {
 		});
 	});
 };
+
+
 
 const insertData = (post) => {
 	let query = orm.run(post);
@@ -40,7 +42,7 @@ const convertData = (data) => {
 
 	dataArr.forEach((val) => {
 		sensType.forEach((sens) => {
-			if ( val.indexOf(sens) > 0 ) {
+			if ( val.indexOf(sens) > -1 ) {
 				sens = sens.replace(/\s|\./g, "");
 				let item = val.split("=")[1];
 				let itemArr = utils.deleteNull(item.replace(/\r/, "").split(" "));
