@@ -75,7 +75,7 @@ const convertData = (data) => {
 	return result;
 };
 
-const ipmi = () => {
+const ipmi = async () => {
 
 	for ( let server in servers ) {
 
@@ -84,7 +84,7 @@ const ipmi = () => {
 			let serverConfig = servers[server];
 			let comm = `ipmiutil sensor ${type} ${serverConfig.ip} -U ${serverConfig.user} -P ${serverConfig.password}`;
 
-			runCMD(comm)
+			await runCMD(comm)
 				.then(data => {
 					let post = convertData(data);
 					insertData(post);
